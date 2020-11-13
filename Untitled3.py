@@ -1,19 +1,9 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # Project: Basic Image Classification
-
-# In[8]:
-
-
 #importing libraries
 import tensorflow as tf
 import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-# In[9]:
 
 
 #importing data from keras.datasets
@@ -23,7 +13,6 @@ from tensorflow.keras.datasets import mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 
-# In[10]:
 
 
 #checking the shapes of dataset
@@ -33,7 +22,6 @@ print('x_test shape: ', x_test.shape)
 print('y_test shape: ', y_test.shape)
 
 
-# In[11]:
 
 
 #ploting one of the image of dataset
@@ -43,14 +31,12 @@ plt.imshow(x_train[5], cmap = 'binary')
 plt.show()
 
 
-# In[12]:
 
 
 #cehecking y_train set
 print(set(y_train))
 
 
-# In[13]:
 
 
 #As this y_train and y_test are the numpy arrays that represents the digit in x set
@@ -62,14 +48,12 @@ y_train_encoded = to_categorical(y_train)
 y_test_encoded = to_categorical(y_test)
 
 
-# In[14]:
 
 
 print('y_train shape: ', y_train_encoded.shape)
 print('y_test shape: ', y_test_encoded.shape)
 
 
-# In[20]:
 
 
 #checking how y_train and y_train_encoded are related
@@ -77,12 +61,11 @@ for i in range(5):
     print(y_train[i],y_train_encoded[i])
 
 
-# In[23]:
 
 
 #Preprocessing
 #now we create a neural network
-#unwrapping the x-(28,28) to x-(784,1)
+#unwrapping the x->(28,28) to x->(784,1)
 x_train_reshaped = np.reshape(x_train,(60000,784))
 x_test_reshaped = np.reshape(x_test,(10000,784))
 
@@ -90,14 +73,12 @@ print('x_train_reshaped shape: ', x_train_reshaped.shape)
 print('x_test_reshaped shape: ', x_test_reshaped.shape)
 
 
-# In[25]:
 
 
 #Pixel values range from 0 to 255
 print(set(x_train_reshaped[0]))
 
 
-# In[30]:
 
 
 #We normalize these values to fit in the model
@@ -115,9 +96,6 @@ print(set(x_train_norm[0]))
 
 
 # # Creating a model
-# 
-
-# In[31]:
 
 
 from tensorflow.keras.models import Sequential
@@ -130,7 +108,6 @@ model = Sequential([
 ])
 
 
-# In[32]:
 
 
 model.compile(
@@ -142,8 +119,6 @@ model.compile(
 model.summary()
 
 
-# In[33]:
-
 
 h = model.fit(
     x_train_norm,
@@ -152,7 +127,6 @@ h = model.fit(
 )
 
 
-# In[34]:
 
 
 #testing on test data
@@ -160,7 +134,6 @@ loss, accuracy = model.evaluate(x_test_norm, y_test_encoded)
 print('test set accuracy: ', accuracy*100)
 
 
-# In[36]:
 
 
 #making predictions
@@ -168,7 +141,6 @@ preds = model.predict(x_test_norm)
 print('shape of preds: ', preds.shape)
 
 
-# In[40]:
 
 
 #plot
@@ -192,23 +164,21 @@ for i in range(36):
 plt.show()
 
 
-# In[45]:
 
 
 count = 0
 for i in range(9999):
     pred = np.argmax(preds[i])
     actual = np.argmax(y_test_encoded[i])
-    if pred!= actual:
+    if pred== actual:
         count += 1
 print(count)
+#--> 9698
 #INFERENCE
 #just to check how many predictions went wrong
-#and we can see the accuracy. out of 10000, only 301 are incorrect
-#model has 97% accuracy.
+#and we can see the accuracy. out of 10000,  9698 are correct
+#model has almost 97% accuracy.
 
-
-# In[ ]:
 
 
 
